@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExerciseCollector.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="50">
+            <Button
+                LineBreakMode="WordWrap" 
+                Text="Для сотрудников и граждан РФ, поступающих на службу в органы внутренних дел и силовых структур" />
+            <Button
+                LineBreakMode="WordWrap"
+                Text="Дополнительно, для должности служащего &quot;Полицейский&quot;">
+            </Button>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

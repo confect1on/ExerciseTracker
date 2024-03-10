@@ -1,4 +1,6 @@
-﻿namespace ExerciseCollector;
+﻿using ExerciseCollector.Pages;
+
+namespace ExerciseCollector;
 
 public partial class App : Application
 {

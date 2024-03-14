@@ -55,33 +55,22 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="StringsLocalization.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>StringsLocalization.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="StringsLocalization.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>StringsLocalization.resx</DependentUpon>
-      </Compile>
       <Compile Update="Pages\GenderPage.xaml.cs">
         <DependentUpon>GenderPickerPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Pages\MainPage.xaml.cs">
+      <Compile Update="Pages\ExerciseEntrantTypePage.xaml.cs">
         <DependentUpon>MainPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Pages\ExerciseCollectorPage.xaml.cs">
+      <Compile Update="Pages\ResultsFillingPage.xaml.cs">
         <DependentUpon>ExerciseCollectorPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
@@ -91,10 +80,10 @@
       <MauiXaml Update="Pages\GenderPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Update="Pages\MainPage.xaml">
+      <MauiXaml Update="Pages\ExerciseEntrantTypePage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Update="Pages\ExerciseCollectorPage.xaml">
+      <MauiXaml Update="Pages\ResultsFillingPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
     </ItemGroup>

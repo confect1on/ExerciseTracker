@@ -4,7 +4,7 @@ namespace ExerciseCollector.MVVM;
 
 public class ExercisePickerModel
 {
-    public ExerciseEntrantType ExerciseEntrantType { get; set; }
+    public ExerciseEntrantType? ExerciseEntrantType { get; set; }
     
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
 }

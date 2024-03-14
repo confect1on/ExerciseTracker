@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ExerciseCollector.MVVM.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:ExerciseCollector.Converters"
+             x:Class="ExerciseCollector.Pages.ResultsFillingPage"
+             x:Name="ContentPage"
+             Title="Упражнения и результаты">
+    <ContentPage.BindingContext>
+        <viewModels:ResultsViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Loaded"
+            Command="{Binding InitializeCommand}" />
+    </ContentPage.Behaviors>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ExerciseTypeToString x:Key="ExerciseTypeToString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="15">
+                <Label
+                    Text="{Binding ExerciseResults.Count, StringFormat='{0}/3'}"
+                    HorizontalOptions="Center"
+                    Padding="20"></Label>
+                <Picker
+                    ItemsSource="{Binding ExerciseTypeNames}"
+                    SelectedItem="{Binding SelectedExerciseTypeName, Mode=TwoWay}">
+                </Picker>
+                <Picker
+                    ItemsSource="{Binding ExercisesForChosenType}"
+                    SelectedItem="{Binding SelectedExerciseForChosenType, Mode=TwoWay}">
+                    <Picker.ItemDisplayBinding>
+                        <MultiBinding StringFormat="{}{0} ({1})">
+                            <Binding Path="Name" />
+                            <Binding Path="UnitOfMeasurementName" />
+                        </MultiBinding>
+                    </Picker.ItemDisplayBinding>
+                </Picker>
+                <Entry Keyboard="Numeric" Text="{Binding Result, Mode=TwoWay}" />
+                <Button
+                    Text="Сохранить результат"
+                    HorizontalOptions="Center"
+                    IsEnabled="{Binding ExercisesForChosenType.Count}"
+                    Command="{Binding SaveResultsCommand}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -7,10 +7,8 @@
              xmlns:converters="clr-namespace:SportMetricsViewer.Converters"
              x:Class="SportMetricsViewer.Pages.ResultsFillingPage"
              x:Name="ContentPage"
-             Title="Упражнения и результаты">
-    <ContentPage.BindingContext>
-        <viewModels:ResultsViewModel />
-    </ContentPage.BindingContext>
+             Title="Упражнения и результаты"
+             x:DataType="viewModels:ResultsViewModel">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
             EventName="Loaded"

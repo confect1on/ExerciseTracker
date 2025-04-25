@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SportMetricsViewer.Domain.Abstractions;
 using SportMetricsViewer.Entities;
 using SportMetricsViewer.Entities.Enums;
 
@@ -12,6 +11,8 @@ namespace SportMetricsViewer.MVVM.ViewModels;
 [QueryProperty(nameof(ExercisePickerModel), nameof(ExercisePickerModel))]
 public partial class ResultsViewModel : ObservableObject
 {
+    private readonly IExercisesRepository _exercisesRepository;
+
     private readonly static Dictionary<string, ExerciseType> ExerciseTypeNameToType = new()
     {
         { "Сила", ExerciseType.Strength },
@@ -29,8 +30,9 @@ public partial class ResultsViewModel : ObservableObject
     [ObservableProperty]
     private Exercise? selectedExerciseForChosenType;
 
-    public ResultsViewModel()
+    public ResultsViewModel(IExercisesRepository exercisesRepository)
     {
+        _exercisesRepository = exercisesRepository;
         PropertyChanged += (_, args) =>
         {
             if (args.PropertyName == nameof(SelectedExerciseTypeName))
@@ -153,7 +155,7 @@ public partial class ResultsViewModel : ObservableObject
             return;
         }
 
-        Exercises = await ReadExercisesAsync(cancellationToken);
+        Exercises = await _exercisesRepository.GetAll(cancellationToken);
         ResetFields();
         _initialized = true;
     }
@@ -162,20 +164,5 @@ public partial class ResultsViewModel : ObservableObject
     {
         SelectedExerciseTypeName = ExerciseTypeNames.First();
         Result = 0;
-    }
-
-    private async Task<List<Exercise>> ReadExercisesAsync(CancellationToken cancellationToken = default)
-    {
-        var opt = new JsonSerializerOptions
-        {
-            Converters =
-            {
-                new JsonStringEnumConverter()
-            }
-        };
-        await using var stream = await FileSystem.OpenAppPackageFileAsync("exercises.json");
-        var exercises = await JsonSerializer.DeserializeAsync<List<Exercise>>(stream, opt, cancellationToken)
-            ?? [];
-        return exercises;
     }
 }

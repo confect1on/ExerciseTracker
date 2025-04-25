@@ -81,8 +81,4 @@
       </MauiXaml>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MVVM\Services\" />
-    </ItemGroup>
-
 </Project>

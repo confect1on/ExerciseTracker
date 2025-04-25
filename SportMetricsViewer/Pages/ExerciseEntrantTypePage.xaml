@@ -6,9 +6,6 @@
              xmlns:enums="clr-namespace:SportMetricsViewer.Entities.Enums"
              Title="Профессия"
              x:DataType="viewModels:ExerciseEntrantTypeViewModel">
-    <ContentPage.BindingContext>
-        <viewModels:ExerciseEntrantTypeViewModel />
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="50">

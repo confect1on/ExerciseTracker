@@ -4,5 +4,5 @@ namespace SportMetricsViewer.Domain.Abstractions;
 
 public interface IExercisesRepository
 {
-    Task<Exercise> GetAll();
+    Task<List<Exercise>> GetAll(CancellationToken cancellationToken = default);
 }

@@ -5,10 +5,8 @@
              x:Class="SportMetricsViewer.Pages.GenderPage"
              xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
              xmlns:enums="clr-namespace:SportMetricsViewer.Entities.Enums"
-             Title="Пол">
-    <ContentPage.BindingContext>
-        <viewModels:GenderViewModel />
-    </ContentPage.BindingContext>
+             Title="Пол"
+             x:DataType="viewModels:GenderViewModel">
     <ContentPage.Content>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="50">

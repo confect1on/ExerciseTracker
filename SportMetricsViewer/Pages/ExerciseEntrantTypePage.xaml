@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SportMetricsViewer.Pages.ExerciseEntrantTypePage"
+             xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
+             xmlns:enums="clr-namespace:SportMetricsViewer.Entities.Enums"
+             Title="Профессия"
+             x:DataType="viewModels:ExerciseEntrantTypeViewModel">
+    <ContentPage.BindingContext>
+        <viewModels:ExerciseEntrantTypeViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="50">
+                <Button
+                    LineBreakMode="WordWrap" 
+                    Text="Для сотрудников и граждан РФ, поступающих на службу в органы внутренних дел и силовых структур"
+                    Command="{Binding  NavigateToGenderPageCommand}"
+                    CommandParameter="{x:Static enums:ExerciseEntrantType.ForApplicants}"/>
+                <Button
+                    LineBreakMode="WordWrap"
+                    Text="Дополнительно, для должности служащего &quot;Полицейский&quot;"
+                    Command="{Binding NavigateToGenderPageCommand}"
+                    CommandParameter="{x:Static enums:ExerciseEntrantType.ForPoliceman}">
+                </Button>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

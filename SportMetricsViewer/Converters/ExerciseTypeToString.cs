@@ -5,7 +5,7 @@ namespace SportMetricsViewer.Converters;
 
 public class ExerciseTypeToString : IValueConverter
 {
-    private static readonly IDictionary<ExerciseType, string> exerciseTypeToString = new Dictionary<ExerciseType, string>
+    private readonly static IDictionary<ExerciseType, string> exerciseTypeToString = new Dictionary<ExerciseType, string>
     {
         { ExerciseType.Agility,  "Быстрота и ловкость"},
         { ExerciseType.Endurance, "Выносливость"},

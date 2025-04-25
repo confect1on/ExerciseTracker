@@ -12,7 +12,7 @@ namespace SportMetricsViewer.MVVM.ViewModels;
 [QueryProperty(nameof(ExercisePickerModel), nameof(ExercisePickerModel))]
 public partial class ResultsViewModel : ObservableObject
 {
-    private static readonly Dictionary<string, ExerciseType> ExerciseTypeNameToType = new()
+    private readonly static Dictionary<string, ExerciseType> ExerciseTypeNameToType = new()
     {
         { "Сила", ExerciseType.Strength },
         { "Быстрота и ловкость", ExerciseType.Agility },

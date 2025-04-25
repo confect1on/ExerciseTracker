@@ -1,9 +1,12 @@
-﻿namespace SportMetricsViewer.Pages;
+﻿using SportMetricsViewer.MVVM.ViewModels;
+
+namespace SportMetricsViewer.Pages;
 
 public partial class ExerciseEntrantTypePage
 {
-    public ExerciseEntrantTypePage()
+    public ExerciseEntrantTypePage(ExerciseEntrantTypeViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
     }
 }

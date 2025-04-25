@@ -8,10 +8,23 @@ using SportMetricsViewer.Entities.Enums;
 
 namespace SportMetricsViewer.MVVM.ViewModels;
 
-[QueryProperty(nameof(ExercisePickerModel), nameof(ExercisePickerModel))]
 public partial class ResultsViewModel : ObservableObject
 {
+    private bool _initialized;
+    private readonly SettingsViewModel _settingsViewModel;
     private readonly IExercisesRepository _exercisesRepository;
+
+    [ObservableProperty]
+    private string _selectedExerciseTypeName;
+
+    [ObservableProperty]
+    private Exercise? _selectedExerciseForChosenType;
+    
+    [ObservableProperty]
+    private int _selectedIndex;
+    
+    [ObservableProperty]
+    private decimal _result;
 
     private readonly static Dictionary<string, ExerciseType> ExerciseTypeNameToType = new()
     {
@@ -20,18 +33,21 @@ public partial class ResultsViewModel : ObservableObject
         { "Выносливость", ExerciseType.Endurance }
     };
     
+    public IReadOnlyList<Exercise> Exercises { get; private set; } = [];
+    
+    public ObservableCollection<ExerciseResult> ExerciseResults { get; set; } = [];
+    
     public IList<string> ExerciseTypeNames { get; } = ExerciseTypeNameToType.Keys.ToList();
 
     public ObservableCollection<Exercise> ExercisesForChosenType { get; private set; } = [];
-    
-    [ObservableProperty]
-    private string selectedExerciseTypeName;
 
-    [ObservableProperty]
-    private Exercise? selectedExerciseForChosenType;
+    public static string NavigationRoute => "SummaryPage";
 
-    public ResultsViewModel(IExercisesRepository exercisesRepository)
+    public ResultsViewModel(
+        SettingsViewModel settingsViewModel,
+        IExercisesRepository exercisesRepository)
     {
+        _settingsViewModel = settingsViewModel;
         _exercisesRepository = exercisesRepository;
         PropertyChanged += (_, args) =>
         {
@@ -45,40 +61,7 @@ public partial class ResultsViewModel : ObservableObject
             RepopulateChosenExercisesCollection();
         };
     }
-
-    private void RepopulateChosenExercisesCollection()
-    {
-        if (ExercisePickerModel is null)
-        {
-            throw new InvalidOperationException($"{nameof(ExercisePickerModel)} property is null");
-        }
-        ExercisesForChosenType.Clear();
-        foreach (var exercise in Exercises
-                     .Where(e => e.ExerciseType == ExerciseTypeNameToType[selectedExerciseTypeName])
-                     .Where(e => e.Gender == ExercisePickerModel.Gender)
-                     .Where(e => e.ExerciseEntrantType == ExercisePickerModel.ExerciseEntrantType)
-                     .Where(e => !ExerciseResults.Select(r => r.Exercise).Contains(e))
-                     .ToList())
-        {
-            ExercisesForChosenType.Add(exercise);
-        }
-        SelectedExerciseForChosenType = ExercisesForChosenType.FirstOrDefault();
-    }
-
-    [ObservableProperty]
-    private int _selectedIndex;
-
-    private bool _initialized;
-
-    public IReadOnlyList<Exercise> Exercises { get; private set; } = [];
     
-    public ExercisePickerModel? ExercisePickerModel { get; set; }
-
-    [ObservableProperty]
-    private decimal _result;
-    
-    public ObservableCollection<ExerciseResult> ExerciseResults { get; set; } = new();
-
     [RelayCommand]
     public async Task SaveResults()
     {
@@ -89,26 +72,10 @@ public partial class ResultsViewModel : ObservableObject
                 { nameof(ExerciseResults), ExerciseResults }
             });
         }
-
-        if (ExercisePickerModel is null)
-        {
-            throw new InvalidOperationException($"{nameof(ExercisePickerModel)} property is null");
-        }
-
-        if (ExercisePickerModel.ExerciseEntrantType is null)
-        {
-            throw new InvalidOperationException($"{nameof(ExercisePickerModel.ExerciseEntrantType)} property is null");
-        }
-
-        if (ExercisePickerModel.Gender is null)
-        {
-            throw new InvalidOperationException($"{nameof(ExercisePickerModel.Gender)} property is null");
-        }
         
         var exerciseResult = new ExerciseResult
         {
-            Exercise = SelectedExerciseForChosenType
-                       ?? throw new InvalidOperationException($"{nameof(SelectedExerciseForChosenType)} is null"),
+            Exercise = SelectedExerciseForChosenType ?? throw new InvalidOperationException($"{nameof(SelectedExerciseForChosenType)} is null"),
             Result = CalculateResult()
         };
         ExerciseResults.Add(exerciseResult);
@@ -124,6 +91,19 @@ public partial class ResultsViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        if (_initialized)
+        {
+            return;
+        }
+
+        Exercises = await _exercisesRepository.GetAll(cancellationToken);
+        ResetFields();
+        _initialized = true;
+    }
+    
     private int CalculateResult()
     {
         if (SelectedExerciseForChosenType is null)
@@ -147,22 +127,24 @@ public partial class ResultsViewModel : ObservableObject
         return calculatedResult;
     }
 
-    [RelayCommand]
-    public async Task InitializeAsync(CancellationToken cancellationToken = default)
-    {
-        if (_initialized)
-        {
-            return;
-        }
-
-        Exercises = await _exercisesRepository.GetAll(cancellationToken);
-        ResetFields();
-        _initialized = true;
-    }
-
     private void ResetFields()
     {
         SelectedExerciseTypeName = ExerciseTypeNames.First();
         Result = 0;
+    }
+    
+    private void RepopulateChosenExercisesCollection()
+    {
+        ExercisesForChosenType.Clear();
+        foreach (var exercise in Exercises
+                     .Where(e => e.ExerciseType == ExerciseTypeNameToType[SelectedExerciseTypeName])
+                     .Where(e => e.Gender == _settingsViewModel.Gender)
+                     .Where(e => e.ExerciseEntrantType == _settingsViewModel.ExerciseEntrantType)
+                     .Where(e => !ExerciseResults.Select(r => r.Exercise).Contains(e))
+                     .ToList())
+        {
+            ExercisesForChosenType.Add(exercise);
+        }
+        SelectedExerciseForChosenType = ExercisesForChosenType.FirstOrDefault();
     }
 }

@@ -7,6 +7,8 @@ namespace SportMetricsViewer.MVVM.ViewModels;
 [QueryProperty(nameof(ExerciseResults), nameof(ExerciseResults))]
 public partial class SummaryViewModel : ObservableObject
 {
+    public static string NavigationRoute => "SummaryPage";
+    
     [ObservableProperty]
     private ObservableCollection<ExerciseResult> exerciseResults = [];
 

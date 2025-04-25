@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SportMetricsViewer.Domain.Abstractions;
 using SportMetricsViewer.Infrastructure;
 using SportMetricsViewer.MVVM.ViewModels;
+using SportMetricsViewer.Pages;
 
 namespace SportMetricsViewer;
 
@@ -22,10 +23,17 @@ public static class MauiProgram
         builder.Services
             .AddTransient<IExercisesRepository, ResourceExercisesRepository>();
         
+        // builder.Services
+        //     .AddTransient<GenderViewModel>()
+        //     .AddTransient<ExerciseEntrantTypeViewModel>()
+        //     .AddTransient<SettingsViewModel>()
+        //     .AddTransient<ResultsViewModel>();
+
         builder.Services
-            .AddTransient<GenderViewModel>()
-            .AddTransient<ExerciseEntrantTypeViewModel>()
-            .AddTransient<ResultsViewModel>();
+            .AddTransientWithShellRoute<GenderPage, GenderViewModel>(GenderViewModel.NavigationRoute)
+            .AddTransientWithShellRoute<ExerciseEntrantTypePage, ExerciseEntrantTypeViewModel>(GenderViewModel.NavigationRoute)
+            .AddTransientWithShellRoute<ResultsFillingPage, ResultsViewModel>(ResultsViewModel.NavigationRoute)
+            .AddTransientWithShellRoute<SummaryPage, SummaryViewModel>(SummaryViewModel.NavigationRoute);
 
 #if DEBUG
         builder.Logging.AddDebug();

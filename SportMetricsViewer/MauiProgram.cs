@@ -22,18 +22,10 @@ public static class MauiProgram
             .UseMauiCommunityToolkit();
         builder.Services
             .AddTransient<IExercisesRepository, ResourceExercisesRepository>();
-        
-        // builder.Services
-        //     .AddTransient<GenderViewModel>()
-        //     .AddTransient<ExerciseEntrantTypeViewModel>()
-        //     .AddTransient<SettingsViewModel>()
-        //     .AddTransient<ResultsViewModel>();
 
         builder.Services
-            .AddTransientWithShellRoute<GenderPage, GenderViewModel>(GenderViewModel.NavigationRoute)
-            .AddTransientWithShellRoute<ExerciseEntrantTypePage, ExerciseEntrantTypeViewModel>(GenderViewModel.NavigationRoute)
-            .AddTransientWithShellRoute<ResultsFillingPage, ResultsViewModel>(ResultsViewModel.NavigationRoute)
-            .AddTransientWithShellRoute<SummaryPage, SummaryViewModel>(SummaryViewModel.NavigationRoute);
+            .AddPages()
+            .AddViewModels();
 
 #if DEBUG
         builder.Logging.AddDebug();

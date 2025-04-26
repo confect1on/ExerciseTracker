@@ -12,6 +12,6 @@ public partial class ExerciseEntrantTypeViewModel(SettingsViewModel settingsView
     public async Task NavigateToGenderPage(ExerciseEntrantType exerciseEntrantType)
     {
         settingsViewModel.ExerciseEntrantType = exerciseEntrantType;
-        await Shell.Current.GoToAsync("gender");
+        await Shell.Current.GoToAsync(GenderViewModel.NavigationRoute);
     }
 }

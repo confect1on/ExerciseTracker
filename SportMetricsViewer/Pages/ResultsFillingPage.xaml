@@ -16,7 +16,7 @@
     </ContentPage.Behaviors>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:ExerciseTypeToString x:Key="ExerciseTypeToString" />
+            <converters:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -27,8 +27,12 @@
                     HorizontalOptions="Center"
                     Padding="20"></Label>
                 <Picker
-                    ItemsSource="{Binding ExerciseTypeNames}"
-                    SelectedItem="{Binding SelectedExerciseTypeName, Mode=TwoWay}">
+                    ItemsSource="{Binding 
+                        Path=ExerciseTypes}"
+                    SelectedItem="{Binding
+                        Path=SelectedExerciseType,
+                        Mode=TwoWay}"
+                    ItemDisplayBinding="{Binding ., Converter={StaticResource EnumToDisplayNameConverter}}">
                 </Picker>
                 <Picker
                     ItemsSource="{Binding ExercisesForChosenType}"

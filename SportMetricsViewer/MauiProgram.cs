@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using SportMetricsViewer.Domain.Abstractions;
+using SportMetricsViewer.Domain.Services;
 using SportMetricsViewer.Infrastructure;
 using SportMetricsViewer.MVVM.ViewModels;
 using SportMetricsViewer.Pages;
@@ -24,6 +25,7 @@ public static class MauiProgram
             .AddTransient<IExercisesRepository, ResourceExercisesRepository>();
 
         builder.Services
+            .AddDomainServices()
             .AddPages()
             .AddViewModels();
 

@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SportMetricsViewer.Domain.Abstractions;
+using SportMetricsViewer.Domain.Abstractions.Dtos;
 using SportMetricsViewer.Entities;
 using SportMetricsViewer.Entities.Enums;
 
@@ -9,135 +11,77 @@ namespace SportMetricsViewer.MVVM.ViewModels;
 
 public partial class ResultsViewModel : ObservableObject
 {
-    private readonly SettingsViewModel _settingsViewModel;
-    private readonly IExercisesRepository _exercisesRepository;
+    private readonly IScoreCalculationService _scoreCalculationService;
+    private readonly IExerciseService _exerciseService;
 
-    private bool _initialized;
+    private IReadOnlyList<ExerciseDto> Exercises { get; set; } = [];
 
     [ObservableProperty]
     private ExerciseType _selectedExerciseType;
 
     [ObservableProperty]
-    private Exercise? _selectedExerciseForChosenType;
+    private ExerciseDto? _selectedExercise;
     
     [ObservableProperty]
-    private int _selectedIndex;
+    private IList<ExerciseDto> _availableExercises = [];
     
     [ObservableProperty]
     private decimal _result;
 
-    public ObservableCollection<ExerciseType> ExerciseTypes { get; private set; } = new(Enum.GetValues<ExerciseType>());
-    
-    public IReadOnlyList<Exercise> Exercises { get; private set; } = [];
-    
-    public ObservableCollection<ExerciseResult> ExerciseResults { get; set; } = [];
-
-    public ObservableCollection<Exercise> ExercisesForChosenType { get; private set; } = [];
-
     public static string NavigationRoute => "ResultsPage";
 
-    public ResultsViewModel(
-        SettingsViewModel settingsViewModel,
-        IExercisesRepository exercisesRepository)
-    {
-        _settingsViewModel = settingsViewModel;
-        _exercisesRepository = exercisesRepository;
-        PropertyChanged += (_, args) =>
-        {
-            if (args.PropertyName == nameof(SelectedExerciseType))
-            {
-                RepopulateChosenExercisesCollection();
-            }
-        };
-        ExerciseResults.CollectionChanged += (_, _) =>
-        {
-            RepopulateChosenExercisesCollection();
-        };
-    }
+    public IReadOnlyList<ExerciseType> AvailableExerciseTypes { get; private set; } = Enum.GetValues<ExerciseType>();
     
-    [RelayCommand]
-    public async Task SaveResults()
+    public ObservableCollection<ExerciseResult> ExerciseResults { get; } = [];
+
+    public ResultsViewModel(IScoreCalculationService scoreCalculationService, IExerciseService exerciseService)
     {
-        if (ExerciseResults.Count == 3)
-        {
-            await Shell.Current.GoToAsync(SummaryViewModel.NavigationRoute, new Dictionary<string, object>
-            {
-                { nameof(ExerciseResults), ExerciseResults }
-            });
-        }
+        _scoreCalculationService = scoreCalculationService;
+        _exerciseService = exerciseService;
         
-        var exerciseResult = new ExerciseResult
-        {
-            Exercise = SelectedExerciseForChosenType ?? throw new InvalidOperationException($"{nameof(SelectedExerciseForChosenType)} is null"),
-            Result = CalculateResult()
-        };
-        ExerciseResults.Add(exerciseResult);
-        ResetFields();
-        if (ExerciseResults.Count == 3)
-        {
-            await Shell.Current.GoToAsync(
-                SummaryViewModel.NavigationRoute,
-                new Dictionary<string, object>
-                {
-                    { nameof(ExerciseResults), ExerciseResults }
-                });
-        }
+        PropertyChanged += OnPropertyChanged;
     }
 
     [RelayCommand]
+    // ReSharper disable once MemberCanBePrivate.Global
+    public async Task SaveResult(CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(SelectedExercise);
+        var currentResult = new ExerciseResult
+        {
+            ExerciseId = SelectedExercise.Id,
+            Result = await _scoreCalculationService.CalculateScoreByResultAsync(SelectedExercise.Id, Result, cancellationToken)
+        };
+        ExerciseResults.Add(currentResult);
+    }
+
+    [RelayCommand]
+    // ReSharper disable once MemberCanBePrivate.Global
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
-        if (_initialized)
-        {
-            return;
-        }
-
-        Exercises = await _exercisesRepository.GetAll(cancellationToken);
-        ResetFields();
-        _initialized = true;
-    }
-    
-    private int CalculateResult()
-    {
-        if (SelectedExerciseForChosenType is null)
-        {
-            throw new InvalidOperationException($"{nameof(SelectedExerciseForChosenType)} property is null");
-        }
-
-        var maxResult = SelectedExerciseForChosenType.Results.Keys.Max();
-        var minResult = SelectedExerciseForChosenType.Results.Keys.Min();
-        if (Result > maxResult)
-        {
-            return SelectedExerciseForChosenType.Results[maxResult];
-        }
-
-        if (Result < minResult)
-        {
-            return SelectedExerciseForChosenType.Results[minResult];
-        }
-        var calculatedResult = SelectedExerciseForChosenType.Results
-            .FirstOrDefault(x => x.Key >= Result).Value;
-        return calculatedResult;
+        Exercises = (await _exerciseService.GetExercisesAsync(cancellationToken)).ToList();
+        UpdateAvailableExercisesCollection();
     }
 
-    private void ResetFields()
+    private void UpdateAvailableExercisesCollection()
     {
-        SelectedExerciseType = ExerciseTypes.First();
-        Result = 0;
+        AvailableExercises = GetAvailableExercises();
+        SelectedExercise = AvailableExercises.FirstOrDefault();
     }
-    
-    private void RepopulateChosenExercisesCollection()
+
+    private List<ExerciseDto> GetAvailableExercises()
     {
-        ExercisesForChosenType.Clear();
-        foreach (var exercise in Exercises
-                     .Where(e => e.ExerciseType == SelectedExerciseType)
-                     .Where(e => e.Gender == _settingsViewModel.Gender)
-                     .Where(e => e.ExerciseEntrantType == _settingsViewModel.ExerciseEntrantType)
-                     .Where(e => !ExerciseResults.Select(r => r.Exercise).Contains(e))
-                     .ToList())
+        return Exercises
+            .Where(e => !ExerciseResults.Select(r => r.ExerciseId).Contains(e.Id))
+            .Where(e => e.ExerciseType == SelectedExerciseType)
+            .ToList();
+    }
+
+    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SelectedExerciseType))
         {
-            ExercisesForChosenType.Add(exercise);
+            UpdateAvailableExercisesCollection();
         }
-        SelectedExerciseForChosenType = ExercisesForChosenType.FirstOrDefault();
     }
 }

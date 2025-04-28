@@ -5,13 +5,14 @@
              xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:SportMetricsViewer.Converters"
+             xmlns:dtos="clr-namespace:SportMetricsViewer.Domain.Abstractions.Dtos"
              x:Class="SportMetricsViewer.Pages.ResultsFillingPage"
              x:Name="ContentPage"
              Title="Упражнения и результаты"
              x:DataType="viewModels:ResultsViewModel">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            EventName="Loaded"
+            EventName="Appearing"
             Command="{Binding InitializeCommand}" />
     </ContentPage.Behaviors>
     <ContentPage.Resources>
@@ -28,17 +29,20 @@
                     Padding="20"></Label>
                 <Picker
                     ItemsSource="{Binding 
-                        Path=ExerciseTypes}"
+                        Path=AvailableExerciseTypes}"
                     SelectedItem="{Binding
                         Path=SelectedExerciseType,
                         Mode=TwoWay}"
-                    ItemDisplayBinding="{Binding ., Converter={StaticResource EnumToDisplayNameConverter}}">
+                    ItemDisplayBinding="{Binding
+                        Path=.,
+                        Converter={StaticResource EnumToDisplayNameConverter}}"
+                    IsEnabled="{Binding AvailableExercises}">
                 </Picker>
                 <Picker
-                    ItemsSource="{Binding ExercisesForChosenType}"
-                    SelectedItem="{Binding SelectedExerciseForChosenType, Mode=TwoWay}">
+                    ItemsSource="{Binding AvailableExercises}"
+                    SelectedItem="{Binding SelectedExercise, Mode=TwoWay}">
                     <Picker.ItemDisplayBinding>
-                        <MultiBinding StringFormat="{}{0} ({1})">
+                        <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
                             <Binding Path="Name" />
                             <Binding Path="UnitOfMeasurementName" />
                         </MultiBinding>
@@ -48,8 +52,8 @@
                 <Button
                     Text="Сохранить результат"
                     HorizontalOptions="Center"
-                    IsEnabled="{Binding ExercisesForChosenType.Count}"
-                    Command="{Binding SaveResultsCommand}"/>
+                    IsEnabled="{Binding AvailableExercises.Count}"
+                    Command="{Binding SaveResultCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

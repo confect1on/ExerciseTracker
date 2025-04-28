@@ -1,5 +1,4 @@
 using SportMetricsViewer.Domain.Abstractions.Dtos;
-using SportMetricsViewer.Entities;
 
 namespace SportMetricsViewer.Domain.Abstractions;
 

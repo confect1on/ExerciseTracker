@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Text.Json;
-using CommunityToolkit.Mvvm.Input;
 using SportMetricsViewer.MVVM.ViewModels;
 
 namespace SportMetricsViewer.Pages;

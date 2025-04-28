@@ -1,5 +1,4 @@
 using SportMetricsViewer.Domain.Abstractions;
-using SportMetricsViewer.MVVM.ViewModels;
 
 namespace SportMetricsViewer.Domain.Services;
 

@@ -3,8 +3,6 @@ using Microsoft.Extensions.Logging;
 using SportMetricsViewer.Domain.Abstractions;
 using SportMetricsViewer.Domain.Services;
 using SportMetricsViewer.Infrastructure;
-using SportMetricsViewer.MVVM.ViewModels;
-using SportMetricsViewer.Pages;
 
 namespace SportMetricsViewer;
 

@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SportMetricsViewer.Entities.Enums;
 

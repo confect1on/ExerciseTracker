@@ -1,6 +1,4 @@
-﻿using SportMetricsViewer.Pages;
-
-namespace SportMetricsViewer;
+﻿namespace SportMetricsViewer;
 
 public partial class App : Application
 {

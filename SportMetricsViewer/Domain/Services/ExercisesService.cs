@@ -1,7 +1,6 @@
 using SportMetricsViewer.Domain.Abstractions;
 using SportMetricsViewer.Domain.Abstractions.Dtos;
 using SportMetricsViewer.Domain.Mappers;
-using SportMetricsViewer.Entities;
 using SportMetricsViewer.MVVM.ViewModels;
 
 namespace SportMetricsViewer.Domain.Services;

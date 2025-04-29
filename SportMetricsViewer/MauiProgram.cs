@@ -23,8 +23,8 @@ public static class MauiProgram
             .AddTransient<IExercisesRepository, ResourceExercisesRepository>();
 
         builder.Services
-            .AddDomainServices()
             .AddPages()
+            .AddDomainServices()
             .AddViewModels();
 
 #if DEBUG

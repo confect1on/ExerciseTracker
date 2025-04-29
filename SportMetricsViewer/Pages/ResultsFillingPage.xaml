@@ -29,18 +29,22 @@
                     Padding="20"></Label>
                 <Picker
                     ItemsSource="{Binding 
-                        Path=AvailableExerciseTypes}"
-                    SelectedItem="{Binding
-                        Path=SelectedExerciseType,
+                        Path=AvailableExerciseTypes,
                         Mode=TwoWay}"
+                    SelectedItem="{Binding
+                        Path=SelectedExerciseType}"
                     ItemDisplayBinding="{Binding
                         Path=.,
                         Converter={StaticResource EnumToDisplayNameConverter}}"
-                    IsEnabled="{Binding AvailableExercises}">
+                    IsEnabled="{Binding AvailableExerciseTypes.Count}">
                 </Picker>
                 <Picker
-                    ItemsSource="{Binding AvailableExercises}"
-                    SelectedItem="{Binding SelectedExercise, Mode=TwoWay}">
+                    ItemsSource="{Binding
+                        Path=DisplayedExercises,
+                        Mode=TwoWay}"
+                    SelectedItem="{Binding
+                        Path=SelectedExercise}"
+                    IsEnabled="{Binding DisplayedExercises.Count}">
                     <Picker.ItemDisplayBinding>
                         <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
                             <Binding Path="Name" />
@@ -52,7 +56,7 @@
                 <Button
                     Text="Сохранить результат"
                     HorizontalOptions="Center"
-                    IsEnabled="{Binding AvailableExercises.Count}"
+                    IsEnabled="{Binding DisplayedExercises.Count}"
                     Command="{Binding SaveResultCommand}"/>
             </StackLayout>
         </ScrollView>

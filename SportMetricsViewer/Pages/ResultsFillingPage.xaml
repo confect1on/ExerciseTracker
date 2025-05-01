@@ -50,7 +50,7 @@
                 <Button
                     Text="Сохранить результат"
                     HorizontalOptions="Center"
-                    IsEnabled="{Binding ExerciseResults.Count}"
+                    IsEnabled="{Binding ExercisePickerViewModel.SelectedExercise, Mode=TwoWay}"
                     Command="{Binding SaveResultCommand}"/>
             </StackLayout>
         </ScrollView>

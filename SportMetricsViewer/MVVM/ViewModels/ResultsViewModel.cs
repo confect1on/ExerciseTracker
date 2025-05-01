@@ -66,6 +66,7 @@ public partial class ResultsViewModel : ObservableObject
             .Where(ex => ex.ExerciseType == ExerciseTypePickerViewModel.SelectedExerciseType)
             .ToArray();
         ExercisePickerViewModel.DisplayedExercises.RefillBy(newDisplayedExercises);
+        ExercisePickerViewModel.SelectedExercise = ExercisePickerViewModel.DisplayedExercises.FirstOrDefault();
     }
 
     private void ExerciseResultsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -99,14 +100,14 @@ public partial class ResultsViewModel : ObservableObject
     // ReSharper disable once MemberCanBePrivate.Global
     public async Task SaveResult(CancellationToken cancellationToken)
     {
-        // ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
-        // var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
-        // var currentResult = new ExerciseResult
-        // {
-        //     ExerciseId = selectedExerciseId,
-        //     Result = await _scoreCalculationService.CalculateScoreByResultAsync(selectedExerciseId, Result, cancellationToken)
-        // };
-        // ExerciseResults.Add(currentResult);
-        // Result = 0;
+        ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
+        var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
+        var currentResult = new ExerciseResult
+        {
+            ExerciseId = selectedExerciseId,
+            Result = await _scoreCalculationService.CalculateScoreByResultAsync(selectedExerciseId, Result, cancellationToken)
+        };
+        ExerciseResults.Add(currentResult);
+        Result = 0;
     }
 }

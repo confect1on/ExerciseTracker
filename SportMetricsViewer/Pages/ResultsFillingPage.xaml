@@ -10,11 +10,11 @@
              x:Name="ContentPage"
              Title="Упражнения и результаты"
              x:DataType="viewModels:ResultsViewModel">
-    <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior
-            EventName="Appearing"
-            Command="{Binding InitializeCommand}" />
-    </ContentPage.Behaviors>
+    <!-- <ContentPage.Behaviors> -->
+    <!--     <toolkit:EventToCommandBehavior -->
+    <!--         EventName="Appearing" -->
+    <!--         Command="{Binding InitializeCommand}" /> -->
+    <!-- </ContentPage.Behaviors> -->
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter" />
@@ -28,23 +28,17 @@
                     HorizontalOptions="Center"
                     Padding="20"></Label>
                 <Picker
-                    ItemsSource="{Binding 
-                        Path=AvailableExerciseTypes,
-                        Mode=TwoWay}"
-                    SelectedItem="{Binding
-                        Path=SelectedExerciseType}"
+                    ItemsSource="{Binding Path=ExerciseTypePickerViewModel.ExerciseTypes}"
+                    SelectedItem="{Binding Path=ExerciseTypePickerViewModel.SelectedExerciseType}"
                     ItemDisplayBinding="{Binding
                         Path=.,
                         Converter={StaticResource EnumToDisplayNameConverter}}"
-                    IsEnabled="{Binding AvailableExerciseTypes.Count}">
+                    IsEnabled="{Binding ExerciseTypePickerViewModel.ExerciseTypes.Count}">
                 </Picker>
                 <Picker
-                    ItemsSource="{Binding
-                        Path=DisplayedExercises,
-                        Mode=TwoWay}"
-                    SelectedItem="{Binding
-                        Path=SelectedExercise}"
-                    IsEnabled="{Binding DisplayedExercises.Count}">
+                    ItemsSource="{Binding ExercisePickerViewModel.DisplayedExercises}"
+                    SelectedItem="{Binding ExercisePickerViewModel.SelectedExercise}"
+                    IsEnabled="{Binding ExercisePickerViewModel.DisplayedExercises.Count}">
                     <Picker.ItemDisplayBinding>
                         <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
                             <Binding Path="Name" />
@@ -56,7 +50,7 @@
                 <Button
                     Text="Сохранить результат"
                     HorizontalOptions="Center"
-                    IsEnabled="{Binding DisplayedExercises.Count}"
+                    IsEnabled="{Binding ExerciseResults.Count}"
                     Command="{Binding SaveResultCommand}"/>
             </StackLayout>
         </ScrollView>

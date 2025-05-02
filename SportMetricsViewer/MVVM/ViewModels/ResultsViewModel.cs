@@ -58,6 +58,19 @@ public partial class ResultsViewModel : ObservableObject
     private void OnAvailableExercisesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         RefillDisplayedExercises();
+        var availableExerciseTypes = AvailableExercises
+            .Select(x => x.ExerciseType)
+            .Distinct();
+        var exerciseTypesToDelete =
+            ExerciseTypePickerViewModel.ExerciseTypes
+                .Except(availableExerciseTypes)
+                .ToArray();
+        foreach (var exerciseType in exerciseTypesToDelete)
+        {
+            ExerciseTypePickerViewModel.ExerciseTypes.Remove(exerciseType);
+        }
+        ExerciseTypePickerViewModel.SelectedExerciseType = ExerciseTypePickerViewModel.ExerciseTypes.First();
+        
     }
 
     private void RefillDisplayedExercises()
@@ -66,6 +79,7 @@ public partial class ResultsViewModel : ObservableObject
             .Where(ex => ex.ExerciseType == ExerciseTypePickerViewModel.SelectedExerciseType)
             .ToArray();
         ExercisePickerViewModel.DisplayedExercises.RefillBy(newDisplayedExercises);
+        // TODO I literally don't know why this isn't working even in UI-thread when triggered by event 
         ExercisePickerViewModel.SelectedExercise = ExercisePickerViewModel.DisplayedExercises.FirstOrDefault();
     }
 

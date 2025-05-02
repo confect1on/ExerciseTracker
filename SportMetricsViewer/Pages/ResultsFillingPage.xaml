@@ -33,12 +33,12 @@
                     ItemDisplayBinding="{Binding
                         Path=.,
                         Converter={StaticResource EnumToDisplayNameConverter}}"
-                    IsEnabled="{Binding ExerciseTypePickerViewModel.ExerciseTypes.Count}">
+                    IsEnabled="{Binding ExerciseTypePickerViewModel.ExerciseTypesCount}">
                 </Picker>
                 <Picker
                     ItemsSource="{Binding ExercisePickerViewModel.DisplayedExercises}"
                     SelectedItem="{Binding ExercisePickerViewModel.SelectedExercise}"
-                    IsEnabled="{Binding ExercisePickerViewModel.DisplayedExercises.Count}">
+                    IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount}">
                     <Picker.ItemDisplayBinding>
                         <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
                             <Binding Path="Name" />
@@ -50,7 +50,7 @@
                 <Button
                     Text="Сохранить результат"
                     HorizontalOptions="Center"
-                    IsEnabled="{Binding ExercisePickerViewModel.SelectedExercise, Mode=TwoWay}"
+                    IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount, Mode=TwoWay}"
                     Command="{Binding SaveResultCommand}"/>
             </StackLayout>
         </ScrollView>

@@ -12,6 +12,9 @@ public partial class ExercisePickerViewModel : ObservableObject
     [ObservableProperty]
     private ExerciseDto? _selectedExercise;
 
+    [ObservableProperty]
+    private int _exercisesCount;
+
     public ExtendedObservableCollection<ExerciseDto> DisplayedExercises { get; } = [];
     
     public ExercisePickerViewModel()
@@ -22,5 +25,6 @@ public partial class ExercisePickerViewModel : ObservableObject
     private void OnDisplayedExercisesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         SelectedExercise = DisplayedExercises.FirstOrDefault();
+        ExercisesCount = DisplayedExercises.Count;
     }
 }

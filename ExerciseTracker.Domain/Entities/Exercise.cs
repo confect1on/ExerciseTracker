@@ -1,6 +1,6 @@
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Entities.Enums;
 
-namespace SportMetricsViewer.Entities;
+namespace ExerciseTracker.Domain.Entities;
 
 public class Exercise
 {

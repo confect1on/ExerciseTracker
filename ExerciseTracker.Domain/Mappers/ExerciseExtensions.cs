@@ -1,7 +1,7 @@
-using SportMetricsViewer.Domain.Abstractions.Dtos;
-using SportMetricsViewer.Entities;
+using ExerciseTracker.Domain.Abstractions.Dtos;
+using ExerciseTracker.Domain.Entities;
 
-namespace SportMetricsViewer.Domain.Mappers;
+namespace ExerciseTracker.Domain.Mappers;
 
 public static class ExerciseExtensions
 {

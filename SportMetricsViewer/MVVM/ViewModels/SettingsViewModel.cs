@@ -1,5 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Entities.Enums;
 
 namespace SportMetricsViewer.MVVM.ViewModels;
 

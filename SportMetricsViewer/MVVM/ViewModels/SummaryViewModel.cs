@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SportMetricsViewer.Entities;
+using ExerciseTracker.Domain.Entities;
 
 namespace SportMetricsViewer.MVVM.ViewModels;
 

@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SportMetricsViewer.Domain.Abstractions.Dtos;
+using ExerciseTracker.Domain.Abstractions.Dtos;
 using SportMetricsViewer.Extensions;
 
 namespace SportMetricsViewer.MVVM.ViewModels;

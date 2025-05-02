@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SportMetricsViewer.Pages.GenderPage"
              xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
-             xmlns:enums="clr-namespace:SportMetricsViewer.Entities.Enums"
+             xmlns:enums="clr-namespace:ExerciseTracker.Domain.Entities.Enums;assembly=ExerciseTracker.Domain"
              Title="Пол"
              x:DataType="viewModels:GenderViewModel">
     <ContentPage.Content>

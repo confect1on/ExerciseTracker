@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui;
+using ExerciseTracker.Domain.Abstractions;
+using ExerciseTracker.Domain.Services;
+using ExerciseTracker.Infrastructure.DataAccess;
 using Microsoft.Extensions.Logging;
-using SportMetricsViewer.Domain.Abstractions;
-using SportMetricsViewer.Domain.Services;
-using SportMetricsViewer.Infrastructure;
 
 namespace SportMetricsViewer;
 
@@ -20,9 +20,7 @@ public static class MauiProgram
             })
             .UseMauiCommunityToolkit();
         builder.Services
-            .AddTransient<IExercisesRepository, ResourceExercisesRepository>();
-
-        builder.Services
+            .AddDataAccess()
             .AddPages()
             .AddDomainServices()
             .AddViewModels();

@@ -1,6 +1,6 @@
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Entities.Enums;
 
-namespace SportMetricsViewer.Domain.Abstractions.Dtos;
+namespace ExerciseTracker.Domain.Abstractions.Dtos;
 
 public record ExerciseDto(int Id, string Name, string UnitOfMeasurementName, ExerciseType ExerciseType)
 {

@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:SportMetricsViewer.Converters"
-             xmlns:dtos="clr-namespace:SportMetricsViewer.Domain.Abstractions.Dtos"
+             xmlns:dtos="clr-namespace:ExerciseTracker.Domain.Abstractions.Dtos;assembly=ExerciseTracker.Domain"
              x:Class="SportMetricsViewer.Pages.SaveSessionPage"
              x:Name="ContentPage"
              Title="Упражнения и результаты"

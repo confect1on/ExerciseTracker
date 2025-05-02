@@ -1,6 +1,6 @@
-using SportMetricsViewer.Domain.Abstractions;
+using ExerciseTracker.Domain.Abstractions;
 
-namespace SportMetricsViewer.Domain.Services;
+namespace ExerciseTracker.Domain.Services;
 
 internal sealed class ScoreCalculationService(
     IExercisesRepository exercisesRepository) : IScoreCalculationService

@@ -1,6 +1,7 @@
-using SportMetricsViewer.Domain.Abstractions;
+using ExerciseTracker.Domain.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace SportMetricsViewer.Domain.Services;
+namespace ExerciseTracker.Domain.Services;
 
 public static class ServiceCollectionExtensions
 {

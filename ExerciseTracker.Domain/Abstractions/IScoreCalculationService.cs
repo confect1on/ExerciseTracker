@@ -1,4 +1,4 @@
-namespace SportMetricsViewer.Domain.Abstractions;
+namespace ExerciseTracker.Domain.Abstractions;
 
 public interface IScoreCalculationService
 {

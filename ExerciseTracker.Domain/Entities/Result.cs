@@ -1,4 +1,4 @@
-namespace SportMetricsViewer.Entities;
+namespace ExerciseTracker.Domain.Entities;
 
 public class Result
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SportMetricsViewer.Entities.Enums;
+namespace ExerciseTracker.Domain.Entities.Enums;
 
 public enum ExerciseType
 {

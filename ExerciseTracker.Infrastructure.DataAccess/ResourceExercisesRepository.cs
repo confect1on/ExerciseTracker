@@ -1,10 +1,11 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using SportMetricsViewer.Domain.Abstractions;
-using SportMetricsViewer.Entities;
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Abstractions;
+using ExerciseTracker.Domain.Entities;
+using ExerciseTracker.Domain.Entities.Enums;
+using Microsoft.Maui.Storage;
 
-namespace SportMetricsViewer.Infrastructure;
+namespace ExerciseTracker.Infrastructure.DataAccess;
 
 internal sealed class ResourceExercisesRepository : IExercisesRepository
 {
@@ -18,6 +19,7 @@ internal sealed class ResourceExercisesRepository : IExercisesRepository
 
     public async Task<List<Exercise>> GetAll(CancellationToken cancellationToken = default)
     {
+        // TODO: remove dependency to MAUI package
         await using var stream = await FileSystem.OpenAppPackageFileAsync("exercises.json");
         var exercises = await JsonSerializer.DeserializeAsync<List<Exercise>>(stream, _jsonSerializerOptions, cancellationToken)
             ?? [];

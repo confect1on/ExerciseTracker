@@ -5,11 +5,11 @@ using System.Text.Json;
 using AndroidX.ConstraintLayout.Motion.Widget;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ExerciseTracker.Domain.Abstractions;
+using ExerciseTracker.Domain.Abstractions.Dtos;
+using ExerciseTracker.Domain.Entities;
+using ExerciseTracker.Domain.Entities.Enums;
 using Microsoft.Extensions.Logging;
-using SportMetricsViewer.Domain.Abstractions;
-using SportMetricsViewer.Domain.Abstractions.Dtos;
-using SportMetricsViewer.Entities;
-using SportMetricsViewer.Entities.Enums;
 using SportMetricsViewer.Extensions;
 
 namespace SportMetricsViewer.MVVM.ViewModels;

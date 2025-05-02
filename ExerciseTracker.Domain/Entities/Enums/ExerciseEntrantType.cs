@@ -1,4 +1,4 @@
-namespace SportMetricsViewer.Entities.Enums;
+namespace ExerciseTracker.Domain.Entities.Enums;
 
 public enum ExerciseEntrantType
 {

@@ -1,7 +1,7 @@
-using SportMetricsViewer.Entities;
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Entities;
+using ExerciseTracker.Domain.Entities.Enums;
 
-namespace SportMetricsViewer.Domain.Abstractions;
+namespace ExerciseTracker.Domain.Abstractions;
 
 public interface IExercisesRepository
 {

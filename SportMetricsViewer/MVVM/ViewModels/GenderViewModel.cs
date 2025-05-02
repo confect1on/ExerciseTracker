@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SportMetricsViewer.Entities.Enums;
+using ExerciseTracker.Domain.Entities.Enums;
 
 namespace SportMetricsViewer.MVVM.ViewModels;
 

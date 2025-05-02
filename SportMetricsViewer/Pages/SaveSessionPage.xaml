@@ -6,10 +6,10 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:SportMetricsViewer.Converters"
              xmlns:dtos="clr-namespace:SportMetricsViewer.Domain.Abstractions.Dtos"
-             x:Class="SportMetricsViewer.Pages.ResultsFillingPage"
+             x:Class="SportMetricsViewer.Pages.SaveSessionPage"
              x:Name="ContentPage"
              Title="Упражнения и результаты"
-             x:DataType="viewModels:ResultsViewModel">
+             x:DataType="viewModels:SaveSessionViewModel">
     <!-- <ContentPage.Behaviors> -->
     <!--     <toolkit:EventToCommandBehavior -->
     <!--         EventName="Appearing" -->
@@ -24,9 +24,15 @@
         <ScrollView>
             <StackLayout Spacing="15">
                 <Label
-                    Text="{Binding ExerciseResults.Count, StringFormat='{0}/3'}"
                     HorizontalOptions="Center"
-                    Padding="20"></Label>
+                    Padding="20">
+                    <Label.Text>
+                        <MultiBinding StringFormat="{}{0}/{1}">
+                            <Binding Path="ExerciseRecordsCount"/>
+                            <Binding Path="MaxExerciseRecordsPerSession" Mode="OneTime"></Binding>
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
                 <Picker
                     ItemsSource="{Binding Path=ExerciseTypePickerViewModel.ExerciseTypes}"
                     SelectedItem="{Binding Path=ExerciseTypePickerViewModel.SelectedExerciseType}"

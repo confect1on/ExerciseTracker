@@ -12,6 +12,6 @@ public partial class GenderViewModel(SettingsViewModel settingsViewModel) : Obse
     public async Task NavigateToExerciseCollectorPage(Gender gender)
     {
         settingsViewModel.Gender = gender;
-        await Shell.Current.GoToAsync(ResultsViewModel.NavigationRoute);
+        await Shell.Current.GoToAsync(SaveSessionViewModel.NavigationRoute);
     }
 }

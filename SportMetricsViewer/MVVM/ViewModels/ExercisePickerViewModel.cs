@@ -24,7 +24,6 @@ public partial class ExercisePickerViewModel : ObservableObject
 
     private void OnDisplayedExercisesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        SelectedExercise = DisplayedExercises.FirstOrDefault();
         ExercisesCount = DisplayedExercises.Count;
     }
 }

@@ -14,15 +14,13 @@ using SportMetricsViewer.Extensions;
 
 namespace SportMetricsViewer.MVVM.ViewModels;
 
-public partial class ResultsViewModel : ObservableObject
+public partial class SaveSessionViewModel : ObservableObject
 {
+    public static string NavigationRoute => "SaveSessionPage";
+
     private readonly IScoreCalculationService _scoreCalculationService;
     private readonly IExerciseService _exerciseService;
-    private readonly ILogger<ResultsViewModel> _logger;
-
-    public ExerciseTypePickerViewModel ExerciseTypePickerViewModel { get; } = new();
-    
-    public ExercisePickerViewModel ExercisePickerViewModel { get; } = new();
+    private readonly ILogger<SaveSessionViewModel> _logger;
 
     [ObservableProperty]
     private ExtendedObservableCollection<ExerciseDto> _exercises = [];
@@ -33,14 +31,21 @@ public partial class ResultsViewModel : ObservableObject
     [ObservableProperty]
     private decimal _result;
 
-    public static string NavigationRoute => "ResultsPage";
+    [ObservableProperty]
+    private int _exerciseRecordsCount;
+
+    public int MaxExerciseRecordsPerSession => 3;
+    
+    public ExerciseTypePickerViewModel ExerciseTypePickerViewModel { get; } = new();
+    
+    public ExercisePickerViewModel ExercisePickerViewModel { get; } = new();
     
     public ExtendedObservableCollection<ExerciseResult> ExerciseResults { get; } = [];
 
-    public ResultsViewModel(
+    public SaveSessionViewModel(
         IScoreCalculationService scoreCalculationService,
         IExerciseService exerciseService,
-        ILogger<ResultsViewModel> logger)
+        ILogger<SaveSessionViewModel> logger)
     {
         _scoreCalculationService = scoreCalculationService;
         _exerciseService = exerciseService;
@@ -58,6 +63,11 @@ public partial class ResultsViewModel : ObservableObject
     private void OnAvailableExercisesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         RefillDisplayedExercises();
+        UpdateExerciseTypes();
+    }
+
+    private void UpdateExerciseTypes()
+    {
         var availableExerciseTypes = AvailableExercises
             .Select(x => x.ExerciseType)
             .Distinct();
@@ -70,7 +80,6 @@ public partial class ResultsViewModel : ObservableObject
             ExerciseTypePickerViewModel.ExerciseTypes.Remove(exerciseType);
         }
         ExerciseTypePickerViewModel.SelectedExerciseType = ExerciseTypePickerViewModel.ExerciseTypes.First();
-        
     }
 
     private void RefillDisplayedExercises()
@@ -79,7 +88,7 @@ public partial class ResultsViewModel : ObservableObject
             .Where(ex => ex.ExerciseType == ExerciseTypePickerViewModel.SelectedExerciseType)
             .ToArray();
         ExercisePickerViewModel.DisplayedExercises.RefillBy(newDisplayedExercises);
-        // TODO I literally don't know why this isn't working even in UI-thread when triggered by event 
+        // TODO I literally don't know why this doesn't work when triggered by event. even in UI-thread 
         ExercisePickerViewModel.SelectedExercise = ExercisePickerViewModel.DisplayedExercises.FirstOrDefault();
     }
 
@@ -96,6 +105,7 @@ public partial class ResultsViewModel : ObservableObject
         var exercisesToDelete = AvailableExercises
             .First(x => x.Id == exerciseIdToDelete);
         AvailableExercises.Remove(exercisesToDelete);
+        ExerciseRecordsCount = ExerciseResults.Count;
     }
 
     private void OnExerciseTypeViewModelChanged(object? sender, PropertyChangedEventArgs e)
@@ -123,5 +133,9 @@ public partial class ResultsViewModel : ObservableObject
         };
         ExerciseResults.Add(currentResult);
         Result = 0;
+        if (ExerciseResults.Count == MaxExerciseRecordsPerSession)
+        {
+            await Shell.Current.GoToAsync(SummaryViewModel.NavigationRoute);
+        }
     }
 }

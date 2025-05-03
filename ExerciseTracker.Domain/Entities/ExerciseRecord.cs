@@ -1,6 +1,6 @@
 namespace ExerciseTracker.Domain.Entities;
 
-public class ExerciseResult
+public class ExerciseRecord
 {
     public required int ExerciseId { get; set; }
     

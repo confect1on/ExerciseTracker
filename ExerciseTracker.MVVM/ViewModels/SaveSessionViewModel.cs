@@ -18,6 +18,7 @@ public partial class SaveSessionViewModel : ObservableObject
     private readonly SettingsViewModel _settingsViewModel;
     private readonly IScoreCalculationService _scoreCalculationService;
     private readonly IExerciseService _exerciseService;
+    private readonly ISessionService _sessionService;
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
@@ -38,22 +39,24 @@ public partial class SaveSessionViewModel : ObservableObject
     
     public ExercisePickerViewModel ExercisePickerViewModel { get; } = new();
     
-    public ExtendedObservableCollection<ExerciseResult> ExerciseResults { get; } = [];
+    public ExtendedObservableCollection<ExerciseRecord> ExerciseRecords { get; } = [];
 
     public SaveSessionViewModel(
         SettingsViewModel settingsViewModel,
         IScoreCalculationService scoreCalculationService,
         IExerciseService exerciseService,
+        ISessionService sessionService,
         INavigationService navigationService)
     {
         _settingsViewModel = settingsViewModel;
         _scoreCalculationService = scoreCalculationService;
         _exerciseService = exerciseService;
+        _sessionService = sessionService;
         _navigationService = navigationService;
 
         AvailableExercises.CollectionChanged += OnAvailableExercisesChanged;
         ExerciseTypePickerViewModel.PropertyChanged += OnExerciseTypeViewModelChanged;
-        ExerciseResults.CollectionChanged += ExerciseResultsOnCollectionChanged;
+        ExerciseRecords.CollectionChanged += ExerciseRecordsOnCollectionChanged;
         Exercises.CollectionChanged += OnExercisesCollectionChanged;
     }
 
@@ -116,10 +119,10 @@ public partial class SaveSessionViewModel : ObservableObject
         ExercisePickerViewModel.SelectedExercise = ExercisePickerViewModel.DisplayedExercises.FirstOrDefault();
     }
 
-    private void ExerciseResultsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void ExerciseRecordsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         var exerciseIdToDelete = e.NewItems?
-            .Cast<ExerciseResult>()
+            .Cast<ExerciseRecord>()
             .Select(r => r.ExerciseId)
             .FirstOrDefault();
         if (exerciseIdToDelete == null)
@@ -129,7 +132,7 @@ public partial class SaveSessionViewModel : ObservableObject
         var exercisesToDelete = AvailableExercises
             .First(x => x.Id == exerciseIdToDelete);
         AvailableExercises.Remove(exercisesToDelete);
-        ExerciseRecordsCount = ExerciseResults.Count;
+        ExerciseRecordsCount = ExerciseRecords.Count;
     }
 
     private void OnExerciseTypeViewModelChanged(object? sender, PropertyChangedEventArgs e)
@@ -142,16 +145,23 @@ public partial class SaveSessionViewModel : ObservableObject
 
     private async Task SaveResultInternal(int selectedExerciseId, CancellationToken cancellationToken)
     {
-        var currentResult = new ExerciseResult
+        var currentResult = new ExerciseRecord
         {
             ExerciseId = selectedExerciseId,
             Result = await _scoreCalculationService.CalculateScoreByResultAsync(selectedExerciseId, Result, cancellationToken)
         };
-        ExerciseResults.Add(currentResult);
+        ExerciseRecords.Add(currentResult);
         Result = 0;
-        if (ExerciseResults.Count == MaxExerciseRecordsPerSession)
+        if (ExerciseRecords.Count == MaxExerciseRecordsPerSession)
         {
-            await _navigationService.NavigateToAsync(SummaryViewModel.NavigationRoute);
+            var sessionId = _sessionService.SaveSession(ExerciseRecords);
+            await _navigationService.NavigateToAsync(SummaryViewModel.NavigationRoute, new Dictionary<string, object>
+            {
+                {
+                    "sessionId",
+                    sessionId
+                }
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 using ExerciseTracker.Domain.Abstractions;
+using ExerciseTracker.Domain.Abstractions.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ExerciseTracker.Infrastructure.DataAccess;

@@ -1,7 +1,7 @@
 using ExerciseTracker.Domain.Entities;
 using ExerciseTracker.Domain.Entities.Enums;
 
-namespace ExerciseTracker.Domain.Abstractions;
+namespace ExerciseTracker.Domain.Abstractions.DataAccess;
 
 public interface IExercisesRepository
 {

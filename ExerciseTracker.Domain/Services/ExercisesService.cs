@@ -1,4 +1,5 @@
 using ExerciseTracker.Domain.Abstractions;
+using ExerciseTracker.Domain.Abstractions.DataAccess;
 using ExerciseTracker.Domain.Abstractions.Dtos;
 using ExerciseTracker.Domain.Entities.Enums;
 using ExerciseTracker.Domain.Mappers;

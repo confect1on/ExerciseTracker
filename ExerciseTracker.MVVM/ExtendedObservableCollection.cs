@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -15,16 +16,28 @@ public class ExtendedObservableCollection<T> : ObservableCollection<T>
         
     }
 
-    public void AddRange(IEnumerable<T> collection)
+    public void AddRange(IList<T> list)
     {
-        AddRangeInternal(collection);
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        ArgumentNullException.ThrowIfNull(list);
+        AddRangeInternal(list);
+        if (list.Count > 0)
+        {
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list as IList));
+        }
+    }
+
+    public void RemoveRange(IList<T> list)
+    {
+        ArgumentNullException.ThrowIfNull(list);
+        RemoveRangeInternal(list);
+        if (list.Count > 0)
+        {
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, list as IList));
+        }
     }
 
     private void AddRangeInternal(IEnumerable<T> collection)
     {
-        ArgumentNullException.ThrowIfNull(collection);
-
         foreach (var item in collection)
         {
             Items.Add(item);

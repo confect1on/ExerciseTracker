@@ -11,6 +11,7 @@ public partial class ExerciseTypePickerViewModel : ObservableObject
 
     [ObservableProperty]
     private int _exerciseTypesCount;
+
     public ExtendedObservableCollection<ExerciseType> ExerciseTypes { get; } = new(Enum.GetValues<ExerciseType>());
     
     public ExerciseTypePickerViewModel()

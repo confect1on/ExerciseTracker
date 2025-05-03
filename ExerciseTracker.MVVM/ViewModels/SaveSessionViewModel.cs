@@ -84,7 +84,7 @@ public partial class SaveSessionViewModel : ObservableObject
             .Where(ex => ex.ExerciseType == ExerciseTypePickerViewModel.SelectedExerciseType)
             .ToArray();
         ExercisePickerViewModel.DisplayedExercises.RefillBy(newDisplayedExercises);
-        // TODO I literally don't know why this doesn't work when triggered by event. even in UI-thread 
+        // TODO: I literally don't know why this doesn't work when triggered by event. even in UI-thread 
         ExercisePickerViewModel.SelectedExercise = ExercisePickerViewModel.DisplayedExercises.FirstOrDefault();
     }
 
@@ -106,22 +106,22 @@ public partial class SaveSessionViewModel : ObservableObject
 
     private void OnExerciseTypeViewModelChanged(object? sender, PropertyChangedEventArgs e)
     {
-        switch (e.PropertyName)
+        if (e.PropertyName == nameof(ExerciseTypePickerViewModel.SelectedExerciseType))
         {
-            case nameof(ExerciseTypePickerViewModel.SelectedExerciseType):
-            {
-                RefillDisplayedExercises();
-                break;
-            }
+            RefillDisplayedExercises();
         }
     }
 
     [RelayCommand]
-    // ReSharper disable once MemberCanBePrivate.Global
-    public async Task SaveResult(CancellationToken cancellationToken)
+    private Task SaveResult(CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
         var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
+        return SaveResultInternal(selectedExerciseId, cancellationToken);
+    }
+
+    private async Task SaveResultInternal(int selectedExerciseId, CancellationToken cancellationToken)
+    {
         var currentResult = new ExerciseResult
         {
             ExerciseId = selectedExerciseId,

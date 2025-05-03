@@ -31,17 +31,6 @@ public class ExtendedObservableCollection<T> : ObservableCollection<T>
         }
     }
 
-    public void RemoveRange(ICollection<T> collection)
-    {
-        ArgumentNullException.ThrowIfNull(collection);
-        if (collection.Count == 0)
-        {
-            return;
-        }
-        RemoveRangeInternal(collection);
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-    }
-
     private void RemoveRangeInternal(IEnumerable<T> collection)
     {
         foreach (var item in collection)

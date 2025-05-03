@@ -10,11 +10,11 @@
              x:Name="ContentPage"
              Title="Упражнения и результаты"
              x:DataType="viewModels:SaveSessionViewModel">
-    <!-- <ContentPage.Behaviors> -->
-    <!--     <toolkit:EventToCommandBehavior -->
-    <!--         EventName="Appearing" -->
-    <!--         Command="{Binding InitializeCommand}" /> -->
-    <!-- </ContentPage.Behaviors> -->
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding InitializeExercisesCommand}" />
+    </ContentPage.Behaviors>
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter" />

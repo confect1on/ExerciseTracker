@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +15,7 @@ public partial class SaveSessionViewModel : ObservableObject
 {
     public static string NavigationRoute => "SaveSessionPage";
 
+    private readonly SettingsViewModel _settingsViewModel;
     private readonly IScoreCalculationService _scoreCalculationService;
     private readonly IExerciseService _exerciseService;
     private readonly INavigationService _navigationService;
@@ -39,21 +41,49 @@ public partial class SaveSessionViewModel : ObservableObject
     public ExtendedObservableCollection<ExerciseResult> ExerciseResults { get; } = [];
 
     public SaveSessionViewModel(
+        SettingsViewModel settingsViewModel,
         IScoreCalculationService scoreCalculationService,
         IExerciseService exerciseService,
         INavigationService navigationService)
     {
+        _settingsViewModel = settingsViewModel;
         _scoreCalculationService = scoreCalculationService;
         _exerciseService = exerciseService;
         _navigationService = navigationService;
+
         AvailableExercises.CollectionChanged += OnAvailableExercisesChanged;
         ExerciseTypePickerViewModel.PropertyChanged += OnExerciseTypeViewModelChanged;
         ExerciseResults.CollectionChanged += ExerciseResultsOnCollectionChanged;
-        AvailableExercises.AddRange(new List<ExerciseDto>(){
-            new(1, "1", "s", ExerciseType.Strength),
-            new(2, "2", "m", ExerciseType.Strength),
-            new(3, "3", "m", ExerciseType.Agility),
-        });
+        Exercises.CollectionChanged += OnExercisesCollectionChanged;
+    }
+
+    [RelayCommand]
+    private Task SaveResult(CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
+        var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
+        return SaveResultInternal(selectedExerciseId, cancellationToken);
+    }
+
+    [RelayCommand]
+    private async Task InitializeExercises(CancellationToken cancellationToken = default)
+    {
+        var exercises = await _exerciseService.GetExercisesAsync(
+            _settingsViewModel.Gender,
+            _settingsViewModel.ExerciseEntrantType,
+            cancellationToken);
+        Exercises.AddRange(exercises.ToList());
+    }
+
+    private void OnExercisesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        var newExercises = e.NewItems?
+            .Cast<ExerciseDto>()
+            .ToList();
+        if (newExercises != null)
+        {
+            AvailableExercises.AddRange(newExercises);
+        }
     }
 
     private void OnAvailableExercisesChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -71,11 +101,9 @@ public partial class SaveSessionViewModel : ObservableObject
             ExerciseTypePickerViewModel.ExerciseTypes
                 .Except(availableExerciseTypes)
                 .ToArray();
-        foreach (var exerciseType in exerciseTypesToDelete)
-        {
-            ExerciseTypePickerViewModel.ExerciseTypes.Remove(exerciseType);
-        }
-        ExerciseTypePickerViewModel.SelectedExerciseType = ExerciseTypePickerViewModel.ExerciseTypes.First();
+        ExerciseTypePickerViewModel.ExerciseTypes.RemoveRange(exerciseTypesToDelete);
+        // TODO: better to use nullable type here, but it causes to rewrite part of the code
+        ExerciseTypePickerViewModel.SelectedExerciseType = ExerciseTypePickerViewModel.ExerciseTypes[0];
     }
 
     private void RefillDisplayedExercises()
@@ -110,14 +138,6 @@ public partial class SaveSessionViewModel : ObservableObject
         {
             RefillDisplayedExercises();
         }
-    }
-
-    [RelayCommand]
-    private Task SaveResult(CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
-        var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
-        return SaveResultInternal(selectedExerciseId, cancellationToken);
     }
 
     private async Task SaveResultInternal(int selectedExerciseId, CancellationToken cancellationToken)

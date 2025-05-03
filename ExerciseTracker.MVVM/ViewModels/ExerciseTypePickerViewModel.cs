@@ -16,6 +16,7 @@ public partial class ExerciseTypePickerViewModel : ObservableObject
     
     public ExerciseTypePickerViewModel()
     {
+        _exerciseTypesCount = ExerciseTypes.Count;
         ExerciseTypes.CollectionChanged += ExerciseTypesOnCollectionChanged;
     }
 

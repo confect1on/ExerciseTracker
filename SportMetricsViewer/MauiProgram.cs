@@ -21,8 +21,9 @@ public static class MauiProgram
             .UseMauiCommunityToolkit();
         builder.Services
             .AddDataAccess()
-            .AddPages()
             .AddDomainServices()
+            .AddPages()
+            .AddPlatformServices()
             .AddViewModels();
 
 #if DEBUG

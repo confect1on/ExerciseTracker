@@ -1,11 +1,8 @@
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ExerciseTracker.Domain.Entities.Enums;
-using SportMetricsViewer.Extensions;
 
-namespace SportMetricsViewer.MVVM.ViewModels;
+namespace ExerciseTracker.MVVM.ViewModels;
 
 public partial class ExerciseTypePickerViewModel : ObservableObject
 {

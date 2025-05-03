@@ -1,4 +1,4 @@
-using SportMetricsViewer.MVVM.ViewModels;
+using ExerciseTracker.MVVM.ViewModels;
 
 namespace SportMetricsViewer.Pages;
 

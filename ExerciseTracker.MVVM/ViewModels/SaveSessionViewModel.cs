@@ -1,18 +1,14 @@
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Text.Json;
-using AndroidX.ConstraintLayout.Motion.Widget;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ExerciseTracker.Domain.Abstractions;
 using ExerciseTracker.Domain.Abstractions.Dtos;
 using ExerciseTracker.Domain.Entities;
 using ExerciseTracker.Domain.Entities.Enums;
-using Microsoft.Extensions.Logging;
-using SportMetricsViewer.Extensions;
+using ExerciseTracker.MVVM.Abstractions;
 
-namespace SportMetricsViewer.MVVM.ViewModels;
+namespace ExerciseTracker.MVVM.ViewModels;
 
 public partial class SaveSessionViewModel : ObservableObject
 {
@@ -20,7 +16,7 @@ public partial class SaveSessionViewModel : ObservableObject
 
     private readonly IScoreCalculationService _scoreCalculationService;
     private readonly IExerciseService _exerciseService;
-    private readonly ILogger<SaveSessionViewModel> _logger;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private ExtendedObservableCollection<ExerciseDto> _exercises = [];
@@ -45,11 +41,11 @@ public partial class SaveSessionViewModel : ObservableObject
     public SaveSessionViewModel(
         IScoreCalculationService scoreCalculationService,
         IExerciseService exerciseService,
-        ILogger<SaveSessionViewModel> logger)
+        INavigationService navigationService)
     {
         _scoreCalculationService = scoreCalculationService;
         _exerciseService = exerciseService;
-        _logger = logger;
+        _navigationService = navigationService;
         AvailableExercises.CollectionChanged += OnAvailableExercisesChanged;
         ExerciseTypePickerViewModel.PropertyChanged += OnExerciseTypeViewModelChanged;
         ExerciseResults.CollectionChanged += ExerciseResultsOnCollectionChanged;
@@ -135,7 +131,7 @@ public partial class SaveSessionViewModel : ObservableObject
         Result = 0;
         if (ExerciseResults.Count == MaxExerciseRecordsPerSession)
         {
-            await Shell.Current.GoToAsync(SummaryViewModel.NavigationRoute);
+            await _navigationService.NavigateToAsync(SummaryViewModel.NavigationRoute);
         }
     }
 }

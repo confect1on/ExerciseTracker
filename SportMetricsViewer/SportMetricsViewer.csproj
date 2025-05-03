@@ -82,14 +82,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controls\" />
-      <Folder Include="Domain\" />
-      <Folder Include="Infrastructure\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ExerciseTracker.Domain\ExerciseTracker.Domain.csproj" />
       <ProjectReference Include="..\ExerciseTracker.Infrastructure.DataAccess\ExerciseTracker.Infrastructure.DataAccess.csproj" />
+      <ProjectReference Include="..\ExerciseTracker.MVVM\ExerciseTracker.MVVM.csproj" />
     </ItemGroup>
 
 </Project>

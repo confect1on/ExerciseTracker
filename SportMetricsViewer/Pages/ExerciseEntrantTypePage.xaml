@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SportMetricsViewer.Pages.ExerciseEntrantTypePage"
-             xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels"
+             xmlns:viewModels="clr-namespace:ExerciseTracker.MVVM.ViewModels;assembly=ExerciseTracker.MVVM"
              xmlns:enums="clr-namespace:ExerciseTracker.Domain.Entities.Enums;assembly=ExerciseTracker.Domain"
              Title="Профессия"
              x:DataType="viewModels:ExerciseEntrantTypeViewModel">

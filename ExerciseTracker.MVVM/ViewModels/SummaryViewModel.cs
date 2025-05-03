@@ -2,9 +2,8 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ExerciseTracker.Domain.Entities;
 
-namespace SportMetricsViewer.MVVM.ViewModels;
+namespace ExerciseTracker.MVVM.ViewModels;
 
-[QueryProperty(nameof(ExerciseResults), nameof(ExerciseResults))]
 public partial class SummaryViewModel : ObservableObject
 {
     public static string NavigationRoute => "SummaryPage";
@@ -14,11 +13,11 @@ public partial class SummaryViewModel : ObservableObject
 
     public SummaryViewModel()
     {
-        ExerciseResults.CollectionChanged += (_, _) => SummaryScore = ExerciseResults
-            .Select(r => r.Result)
+        ExerciseResults.CollectionChanged += (_, _) => SummaryScore = Enumerable
+            .Select<ExerciseResult, int>(ExerciseResults, r => r.Result)
             .Sum();
-        PropertyChanged += (_, _) => SummaryScore = ExerciseResults
-            .Select(r => r.Result)
+        PropertyChanged += (_, _) => SummaryScore = Enumerable
+            .Select<ExerciseResult, int>(ExerciseResults, r => r.Result)
             .Sum();
     }
     

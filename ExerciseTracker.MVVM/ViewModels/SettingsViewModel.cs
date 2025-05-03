@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using ExerciseTracker.Domain.Entities.Enums;
 
-namespace SportMetricsViewer.MVVM.ViewModels;
+namespace ExerciseTracker.MVVM.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {

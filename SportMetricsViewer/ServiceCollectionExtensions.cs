@@ -1,5 +1,5 @@
 using CommunityToolkit.Maui;
-using SportMetricsViewer.MVVM.ViewModels;
+using ExerciseTracker.MVVM.ViewModels;
 using SportMetricsViewer.Pages;
 
 namespace SportMetricsViewer;

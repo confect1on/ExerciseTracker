@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace SportMetricsViewer.Extensions;
+namespace ExerciseTracker.MVVM;
 
 public class ExtendedObservableCollection<T> : ObservableCollection<T>
 {

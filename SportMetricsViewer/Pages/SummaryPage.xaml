@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SportMetricsViewer.Pages.SummaryPage"
              x:Name="ContentPage"
-             xmlns:viewModels="clr-namespace:SportMetricsViewer.MVVM.ViewModels">
+             xmlns:viewModels="clr-namespace:ExerciseTracker.MVVM.ViewModels;assembly=ExerciseTracker.MVVM">
     <ContentPage.BindingContext>
         <viewModels:SummaryViewModel/>
     </ContentPage.BindingContext>

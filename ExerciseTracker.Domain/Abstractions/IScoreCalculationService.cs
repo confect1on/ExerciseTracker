@@ -5,5 +5,5 @@ public interface IScoreCalculationService
     Task<int> CalculateScoreByResultAsync(
         int exerciseId,
         decimal resultInMeasurableUnits,
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken = default);
 }

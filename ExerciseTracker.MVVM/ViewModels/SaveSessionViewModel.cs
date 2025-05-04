@@ -61,15 +61,15 @@ public partial class SaveSessionViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task SaveResult(CancellationToken cancellationToken = default)
+    private Task SaveResultAsync()
     {
         ArgumentNullException.ThrowIfNull(ExercisePickerViewModel.SelectedExercise);
         var selectedExerciseId = ExercisePickerViewModel.SelectedExercise.Id;
-        return SaveResultInternal(selectedExerciseId, cancellationToken);
+        return SaveResultInternal(selectedExerciseId);
     }
 
     [RelayCommand]
-    private async Task InitializeExercises(CancellationToken cancellationToken = default)
+    private async Task InitializeExercisesAsync(CancellationToken cancellationToken = default)
     {
         var exercises = await _exerciseService.GetExercisesAsync(
             _settingsViewModel.Gender,
@@ -104,7 +104,10 @@ public partial class SaveSessionViewModel : ObservableObject
             ExerciseTypePickerViewModel.ExerciseTypes
                 .Except(availableExerciseTypes)
                 .ToArray();
-        ExerciseTypePickerViewModel.ExerciseTypes.RemoveRange(exerciseTypesToDelete);
+        foreach (var exerciseType in exerciseTypesToDelete)
+        {
+            ExerciseTypePickerViewModel.ExerciseTypes.Remove(exerciseType);
+        }
         // TODO: better to use nullable type here, but it causes to rewrite part of the code
         ExerciseTypePickerViewModel.SelectedExerciseType = ExerciseTypePickerViewModel.ExerciseTypes[0];
     }
@@ -143,19 +146,19 @@ public partial class SaveSessionViewModel : ObservableObject
         }
     }
 
-    private async Task SaveResultInternal(int selectedExerciseId, CancellationToken cancellationToken)
+    private async Task SaveResultInternal(int selectedExerciseId)
     {
         var currentResult = new ExerciseRecord
         {
             ExerciseId = selectedExerciseId,
-            Result = await _scoreCalculationService.CalculateScoreByResultAsync(selectedExerciseId, Result, cancellationToken)
+            ResultInMeasurableUnit = Result,
         };
         ExerciseRecords.Add(currentResult);
         Result = 0;
         if (ExerciseRecords.Count == MaxExerciseRecordsPerSession)
         {
             var sessionId = _sessionService.SaveSession(ExerciseRecords);
-            await _navigationService.NavigateToAsync(SummaryViewModel.NavigationRoute, new Dictionary<string, object>
+            await _navigationService.NavigateToAsync(SessionOverview.SummaryViewModel.NavigationRoute, new Dictionary<string, object>
             {
                 {
                     "sessionId",

@@ -20,9 +20,13 @@ public class ExtendedObservableCollection<T> : ObservableCollection<T>
     {
         ArgumentNullException.ThrowIfNull(list);
         AddRangeInternal(list);
+        var oldItemsCount = this.Items.Count;
         if (list.Count > 0)
         {
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list as IList));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                action: NotifyCollectionChangedAction.Add,
+                changedItems: list as IList,
+                startingIndex: oldItemsCount));
         }
     }
 

@@ -4,20 +4,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SportMetricsViewer.Pages.SummaryPage"
              x:Name="ContentPage"
-             xmlns:viewModels="clr-namespace:ExerciseTracker.MVVM.ViewModels;assembly=ExerciseTracker.MVVM">
-    <ContentPage.BindingContext>
-        <viewModels:SummaryViewModel/>
-    </ContentPage.BindingContext>
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:ExerciseTracker.MVVM.ViewModels;assembly=ExerciseTracker.MVVM"
+             xmlns:sessionOverview="clr-namespace:ExerciseTracker.MVVM.ViewModels.SessionOverview;assembly=ExerciseTracker.MVVM"
+             x:DataType="sessionOverview:SummaryViewModel">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding InitializeCommand}"/>
+    </ContentPage.Behaviors>
     <ContentPage.Content>
         <StackLayout Spacing="20">
             <CollectionView
-                ItemsSource="{Binding ExerciseResults}"
+                ItemsSource="{Binding ExerciseRecordDtos}"
                 HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="viewModels:ExerciseRecordDto">
                         <StackLayout>
-                            <Label FontSize="30" Text="{Binding Exercise.Name}" />
-                            <Label FontSize="30" Text="{Binding Result, StringFormat='Кол-во баллов: {0}'}" />
+                            <Label FontSize="30" Text="{Binding Name}" />
+                            <Label FontSize="30" Text="{Binding Score, StringFormat='Кол-во баллов: {0}'}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

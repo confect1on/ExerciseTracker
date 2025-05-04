@@ -4,5 +4,5 @@ public class ExerciseRecord
 {
     public required int ExerciseId { get; set; }
     
-    public int Result { get; set; }
+    public decimal ResultInMeasurableUnit { get; set; }
 }

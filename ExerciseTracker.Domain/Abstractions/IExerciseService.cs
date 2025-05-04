@@ -6,4 +6,6 @@ namespace ExerciseTracker.Domain.Abstractions;
 public interface IExerciseService
 {
     Task<IEnumerable<ExerciseDto>> GetExercisesAsync(Gender gender, ExerciseEntrantType exerciseEntrantType, CancellationToken cancellationToken = default);
+    
+    Task<ExerciseDto> GetExerciseByIdAsync(int id, CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui;
 using ExerciseTracker.MVVM.Abstractions;
 using ExerciseTracker.MVVM.ViewModels;
+using ExerciseTracker.MVVM.ViewModels.SessionOverview;
 using SportMetricsViewer.Implementations;
 using SportMetricsViewer.Pages;
 

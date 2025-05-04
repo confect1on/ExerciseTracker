@@ -39,6 +39,6 @@ internal sealed class ResourceExercisesRepository : IExercisesRepository
     public async Task<Exercise> GetById(int id, CancellationToken cancellationToken = default)
     {
         var exercises = await GetAll(cancellationToken);
-        return exercises.Single(e => e.Id == id);
+        return exercises.First(e => e.Id == id);
     }
 }

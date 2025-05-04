@@ -21,4 +21,10 @@ internal sealed class ExercisesService(
         
         return exercises.Select(e => e.MapToDto());
     }
+
+    public async Task<ExerciseDto> GetExerciseByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var exercise = await exercisesRepository.GetById(id, cancellationToken);
+        return exercise.MapToDto();
+    }
 }

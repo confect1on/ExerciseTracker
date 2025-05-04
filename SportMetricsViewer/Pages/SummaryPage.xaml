@@ -14,23 +14,71 @@
             Command="{Binding InitializeCommand}"/>
     </ContentPage.Behaviors>
     <ContentPage.Content>
-        <StackLayout Spacing="20">
-            <CollectionView
-                ItemsSource="{Binding ExerciseRecordDtos}"
-                HorizontalOptions="Center">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="viewModels:ExerciseRecordDto">
-                        <StackLayout>
-                            <Label FontSize="30" Text="{Binding Name}" />
-                            <Label FontSize="30" Text="{Binding Score, StringFormat='Кол-во баллов: {0}'}" />
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#f0f2f0" Offset="0"/>
+                    <GradientStop Color="#c9d6ff" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <StackLayout Spacing="25" Margin="20">
+                <Label Text="Результаты"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       TextColor="#2d3436"
+                       HorizontalOptions="Center"/>
+
+                <CollectionView ItemsSource="{Binding ExerciseRecordDtos}"
+                                HorizontalOptions="Fill">
+                    <CollectionView.EmptyView>
+                        <StackLayout VerticalOptions="Center">
+                            <Label Text="🏃‍♂️ Пока нет записей"
+                                   FontSize="20"
+                                   TextColor="#636e72"
+                                   HorizontalOptions="Center"/>
                         </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
-                </CollectionView.ItemsLayout>
-            </CollectionView>
-            <Label FontSize="30" Text="{Binding SummaryScore, StringFormat='Итого: {0}'}" />
-        </StackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewModels:ExerciseRecordDto">
+                            <Frame CornerRadius="15"
+                                   Padding="20"
+                                   Margin="0,0,0,15"
+                                   HasShadow="True"
+                                   BorderColor="#dfe6e9"
+                                   BackgroundColor="White">
+                                <StackLayout Spacing="10">
+                                    <Label Text="{Binding Name}"
+                                           FontSize="22"
+                                           FontAttributes="Bold"
+                                           TextColor="#2d3436"/>
+                                
+                                    <BoxView HeightRequest="2"
+                                             Color="#fdcb6e"
+                                             HorizontalOptions="Start"
+                                             WidthRequest="50"/>
+                                
+                                    <Label Text="{Binding Score, StringFormat='Баллы: {0}'}"
+                                           FontSize="18"
+                                           TextColor="#636e72"/>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Frame CornerRadius="15"
+                       Padding="20"
+                       BackgroundColor="#0984e3"
+                       HasShadow="True">
+                    <Label Text="{Binding SummaryScore, StringFormat='Итого баллов: {0}'}"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center"/>
+                </Frame>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

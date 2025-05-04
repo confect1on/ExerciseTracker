@@ -7,20 +7,64 @@
              xmlns:enums="clr-namespace:ExerciseTracker.Domain.Entities.Enums;assembly=ExerciseTracker.Domain"
              Title="Пол"
              x:DataType="viewModels:GenderViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonCyanStyle" TargetType="Button">
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="Padding" Value="20, 15" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BackgroundColor" Value="#00b894" />
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+                <Setter Property="Margin" Value="0, 20"></Setter>
+                <Setter Property="LineBreakMode" Value="WordWrap"></Setter>
+                <Setter Property="Shadow">
+                    <Shadow Brush="#00997a"
+                            Offset="0,5"
+                            Radius="10" />
+                </Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#00b894" />
+                                    <Setter Property="Scale" Value="1.00"></Setter>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#e3f2fd" />
+                                    <Setter Property="Scale" Value="0.98" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="50">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#f0f2f0" Offset="0" />
+                    <GradientStop Color="#c9d6ff" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <VerticalStackLayout Padding="25" Spacing="20">
                 <Button
                     Text="Юноши"
-                    LineBreakMode="WordWrap"
+                    Style="{StaticResource ButtonCyanStyle}"
                     Command="{Binding NavigateToExerciseCollectorPageCommand }"
                     CommandParameter="{x:Static enums:Gender.Male}" />
                 <Button
                     Text="Девушки"
-                    LineBreakMode="WordWrap"
+                    Style="{StaticResource ButtonCyanStyle}"
                     Command="{Binding NavigateToExerciseCollectorPageCommand}"
-                    CommandParameter="{x:Static enums:Gender.Female}"/>
+                    CommandParameter="{x:Static enums:Gender.Female}" />
             </VerticalStackLayout>
-        </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

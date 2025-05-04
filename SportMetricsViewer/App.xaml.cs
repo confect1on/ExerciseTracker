@@ -1,11 +1,11 @@
 ﻿namespace SportMetricsViewer;
 
-public partial class App : Application
+public partial class App
 {
-    public App()
+    public App(AppShell appShell)
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
+        MainPage = appShell;
     }
 }

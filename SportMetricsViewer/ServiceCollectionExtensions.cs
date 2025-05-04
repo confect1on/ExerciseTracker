@@ -10,6 +10,7 @@ namespace SportMetricsViewer;
 internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPages(this IServiceCollection services) => services
+        .AddSingleton<AppShell>()
         .AddTransientWithShellRoute<GenderPage, GenderViewModel>(GenderViewModel.NavigationRoute)
         .AddTransientWithShellRoute<ExerciseEntrantTypePage, ExerciseEntrantTypeViewModel>(ExerciseEntrantTypeViewModel.NavigationRoute)
         .AddTransientWithShellRoute<SaveSessionPage, SaveSessionViewModel>(SaveSessionViewModel.NavigationRoute)

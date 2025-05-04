@@ -21,44 +21,137 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#f8f9fa" Offset="0"/>
+                <GradientStop Color="#e3f2fd" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
         <ScrollView>
-            <StackLayout Spacing="15">
-                <Label
-                    HorizontalOptions="Center"
-                    Padding="20">
-                    <Label.Text>
-                        <MultiBinding StringFormat="{}{0}/{1}">
-                            <Binding Path="ExerciseRecordsCount"/>
-                            <Binding Path="MaxExerciseRecordsPerSession" Mode="OneTime"></Binding>
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
-                <Picker
-                    ItemsSource="{Binding Path=ExerciseTypePickerViewModel.ExerciseTypes}"
-                    SelectedItem="{Binding Path=ExerciseTypePickerViewModel.SelectedExerciseType}"
-                    ItemDisplayBinding="{Binding
-                        Path=.,
-                        Converter={StaticResource EnumToDisplayNameConverter}}"
-                    IsEnabled="{Binding ExerciseTypePickerViewModel.ExerciseTypesCount}">
-                </Picker>
-                <Picker
-                    ItemsSource="{Binding ExercisePickerViewModel.DisplayedExercises}"
-                    SelectedItem="{Binding ExercisePickerViewModel.SelectedExercise}"
-                    IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount}">
-                    <Picker.ItemDisplayBinding>
-                        <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
-                            <Binding Path="Name" />
-                            <Binding Path="UnitOfMeasurementName" />
-                        </MultiBinding>
-                    </Picker.ItemDisplayBinding>
-                </Picker>
-                <Entry Keyboard="Numeric" Text="{Binding Result, Mode=TwoWay}" />
-                <Button
-                    Text="Сохранить результат"
-                    HorizontalOptions="Center"
-                    IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount, Mode=TwoWay}"
-                    Command="{Binding SaveResultCommand}"/>
+            <StackLayout Spacing="25" Margin="20,30">
+                <!-- Заголовок -->
+                <Label Text="Новая запись"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="#2d3436"
+                       HorizontalOptions="Center"/>
+
+                <!-- Счетчик -->
+                <Frame CornerRadius="15"
+                       Padding="20"
+                       BackgroundColor="#ffffff"
+                       HasShadow="True">
+                    <Label HorizontalOptions="Center" 
+                           FontSize="24"
+                           TextColor="#0984e3">
+                        <Label.Text>
+                            <MultiBinding StringFormat="{}{0}/{1}">
+                                <Binding Path="ExerciseRecordsCount"/>
+                                <Binding Path="MaxExerciseRecordsPerSession" Mode="OneTime"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
+                </Frame>
+
+                <!-- Выбор типа упражнения -->
+                <Frame CornerRadius="12"
+                       Padding="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Picker Title="Тип упражнения"
+                            TitleColor="#636e72"
+                            ItemsSource="{Binding ExerciseTypePickerViewModel.ExerciseTypes}"
+                            SelectedItem="{Binding ExerciseTypePickerViewModel.SelectedExerciseType}"
+                            ItemDisplayBinding="{Binding ., Converter={StaticResource EnumToDisplayNameConverter}}"
+                            IsEnabled="{Binding ExerciseTypePickerViewModel.ExerciseTypesCount}"
+                            FontSize="18"
+                            TextColor="#2d3436">
+                        <!-- Стилизация через Resources -->
+                        <Picker.Resources>
+                            <ResourceDictionary>
+                                <Color x:Key="PickerBackgroundColor">Transparent</Color>
+                                <Color x:Key="PickerTitleColor">#b2bec3</Color>
+                                <Color x:Key="PickerTextColor">#2d3436</Color>
+                            </ResourceDictionary>
+                        </Picker.Resources>
+                    </Picker>
+                </Frame>
+
+                <!-- Выбор упражнения -->
+                <Frame CornerRadius="12"
+                       Padding="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Picker Title="Конкретное упражнение"
+                            TitleColor="#636e72"
+                            ItemsSource="{Binding ExercisePickerViewModel.DisplayedExercises}"
+                            SelectedItem="{Binding ExercisePickerViewModel.SelectedExercise}"
+                            IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount}"
+                            FontSize="18"
+                            TextColor="#2d3436">
+                        <Picker.ItemDisplayBinding>
+                            <MultiBinding StringFormat="{}{0} ({1})" x:DataType="dtos:ExerciseDto">
+                                <Binding Path="Name" />
+                                <Binding Path="UnitOfMeasurementName" />
+                            </MultiBinding>
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                </Frame>
+
+                <!-- Поле ввода -->
+                <Frame CornerRadius="12"
+                       Padding="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Entry Placeholder="Введите результат"
+                           PlaceholderColor="#b2bec3"
+                           Keyboard="Numeric"
+                           Text="{Binding Result, Mode=TwoWay}"
+                           FontSize="18"
+                           TextColor="#2d3436">
+                        <!-- Стилизация подчеркивания -->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Focused">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#e3f2fd"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Entry>
+                </Frame>
+
+                <!-- Кнопка сохранения -->
+                <Button Text="Сохранить результат"
+                        CornerRadius="25"
+                        Padding="20,15"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        BackgroundColor="#00b894"
+                        TextColor="White"
+                        HorizontalOptions="Fill"
+                        Margin="0,20"
+                        HeightRequest="60"
+                        IsEnabled="{Binding ExercisePickerViewModel.ExercisesCount}"
+                        Command="{Binding SaveResultCommand}">
+                    <Button.Shadow>
+                        <Shadow Brush="#00997a"
+                                Offset="0,5"
+                                Radius="10"/>
+                    </Button.Shadow>
+                </Button>
             </StackLayout>
         </ScrollView>
-    </ContentPage.Content>
+    </Grid>
+</ContentPage.Content>
 </ContentPage>

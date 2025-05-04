@@ -10,7 +10,7 @@ public partial class ExerciseEntrantTypeViewModel(SettingsViewModel settingsView
     public static string NavigationRoute => "ExerciseEntrantTypePage";
 
     [RelayCommand]
-    private async Task NavigateToGenderPage(ExerciseEntrantType exerciseEntrantType)
+    private async Task NavigateToGenderPageAsync(ExerciseEntrantType exerciseEntrantType)
     {
         settingsViewModel.ExerciseEntrantType = exerciseEntrantType;
         await navigationService.NavigateToAsync(GenderViewModel.NavigationRoute);

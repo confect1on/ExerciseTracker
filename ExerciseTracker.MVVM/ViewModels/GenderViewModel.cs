@@ -10,7 +10,7 @@ public partial class GenderViewModel(SettingsViewModel settingsViewModel, INavig
     public static string NavigationRoute => "GenderPage";
 
     [RelayCommand]
-    private async Task NavigateToExerciseCollectorPage(Gender gender)
+    private async Task NavigateToExerciseCollectorPageAsync(Gender gender)
     {
         settingsViewModel.Gender = gender;
         await navigationService.NavigateToAsync(SaveSessionViewModel.NavigationRoute);

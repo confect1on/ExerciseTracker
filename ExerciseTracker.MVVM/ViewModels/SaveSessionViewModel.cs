@@ -16,7 +16,6 @@ public partial class SaveSessionViewModel : ObservableObject
     public static string NavigationRoute => "SaveSessionPage";
 
     private readonly SettingsViewModel _settingsViewModel;
-    private readonly IScoreCalculationService _scoreCalculationService;
     private readonly IExerciseService _exerciseService;
     private readonly ISessionService _sessionService;
     private readonly INavigationService _navigationService;
@@ -43,13 +42,11 @@ public partial class SaveSessionViewModel : ObservableObject
 
     public SaveSessionViewModel(
         SettingsViewModel settingsViewModel,
-        IScoreCalculationService scoreCalculationService,
         IExerciseService exerciseService,
         ISessionService sessionService,
         INavigationService navigationService)
     {
         _settingsViewModel = settingsViewModel;
-        _scoreCalculationService = scoreCalculationService;
         _exerciseService = exerciseService;
         _sessionService = sessionService;
         _navigationService = navigationService;

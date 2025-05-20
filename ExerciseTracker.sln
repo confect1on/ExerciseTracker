@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportMetricsViewer", "SportMetricsViewer\SportMetricsViewer.csproj", "{837AE201-C89D-4F1D-B2EC-01F9B3C62F2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExerciseTracker", "ExerciseTracker\ExerciseTracker.csproj", "{837AE201-C89D-4F1D-B2EC-01F9B3C62F2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExerciseTracker.Domain", "ExerciseTracker.Domain\ExerciseTracker.Domain.csproj", "{F7C215DC-96D2-47C9-8269-171D88F36E1F}"
 EndProject

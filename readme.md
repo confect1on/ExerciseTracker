@@ -20,4 +20,6 @@
 
 ## Требования
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- .NET MAUI Workload
+- Android Emulator
 - IDE (VS 2022+, Rider, VS Code)
